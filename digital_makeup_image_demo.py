@@ -30,10 +30,11 @@ jewel_img[jewel_mask == 255] = 0
 jewel_area = frame[y:y+img_height, x:x+img_width]
 # bitwise_and will convert all black regions in any image to black in resulting image
 masked_jewel_area = cv2.bitwise_and(jewel_area, jewel_area, mask=jewel_mask)
+# add both images so that the black region in any image will result in another image non black regions being rendered over that area
 final_jewel = cv2.add(masked_jewel_area, jewel_img)
-
+# replace original frame  jewel area with newly created jewel_area
 frame[y:y+img_height, x:x+img_width] = final_jewel
-
+# convert image to RGB format to read it in pillow library
 rgb_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 pil_img = Image.fromarray(rgb_img)
 draw = ImageDraw.Draw(pil_img, 'RGBA')
@@ -44,7 +45,7 @@ draw.polygon(face_landmarks['top_lip'], fill=(158, 63, 136, 100))
 draw.polygon(face_landmarks['bottom_lip'], fill=(158, 63, 136, 100))
 draw.polygon(face_landmarks['left_eye'], fill=(23, 26, 31, 100))
 draw.polygon(face_landmarks['right_eye'], fill=(23, 26, 31, 100))
-
+# calculate x, y, radius for ellipse to be drawn between two eyebrows
 x_centre_eyebrow = face_landmarks['nose_bridge'][0][0]
 y_centre_eyebrow = face_landmarks['left_eyebrow'][4][1]
 r = int( 1/4 * abs(face_landmarks['left_eyebrow'][4][0] - face_landmarks['right_eyebrow'][0][0]) )
