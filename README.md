@@ -39,7 +39,7 @@ pip install pillow
 
 
 ## Running the program
-python3 digital_makeup_image_demo.py
+python3 digital_makeup_image_demo.py<br>
 python3 digital_makeup_webcam.py
 
 
